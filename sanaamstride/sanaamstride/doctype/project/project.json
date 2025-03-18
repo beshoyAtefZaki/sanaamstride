@@ -1,0 +1,256 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-18 16:35:24.731411",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "project_description_section",
+  "project_name",
+  "status",
+  "parent_project",
+  "is_parent",
+  "description",
+  "date_section_section",
+  "expected_start_date",
+  "start_date",
+  "column_break_hpgo",
+  "expected_end_date",
+  "end_date",
+  "development_section",
+  "development_type",
+  "total_sup_projects",
+  "total_sprints",
+  "total_tasks",
+  "column_break_tpnd",
+  "total_sup_projects_expected_hours",
+  "total_sprint_expected_hours",
+  "total_tasks_expected_hours",
+  "project_time_section",
+  "total_project_hours",
+  "total_sprints_hours",
+  "total_tasks_hours",
+  "customer_section",
+  "customer_details",
+  "customer_name",
+  "customer_phone_number",
+  "column_break_wtzy",
+  "contact_person",
+  "contact_person_mobil",
+  "contact_person_email",
+  "role_section",
+  "table_sdso"
+ ],
+ "fields": [
+  {
+   "fieldname": "project_description_section",
+   "fieldtype": "Section Break",
+   "label": "Project Description"
+  },
+  {
+   "fieldname": "project_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Project Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Waiting\non progress\nHold\nCompleted\nCancels"
+  },
+  {
+   "fieldname": "parent_project",
+   "fieldtype": "Link",
+   "label": "Parent Project",
+   "options": "Project"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_parent",
+   "fieldtype": "Check",
+   "label": "Is parent",
+   "options": "True\nFalse"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "date_section_section",
+   "fieldtype": "Section Break",
+   "label": "Date Section"
+  },
+  {
+   "fieldname": "expected_start_date",
+   "fieldtype": "Data",
+   "label": "Expected Start Date"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Data",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "column_break_hpgo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "expected_end_date",
+   "fieldtype": "Data",
+   "label": "Expected End Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Data",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "development_section",
+   "fieldtype": "Section Break",
+   "label": "Development"
+  },
+  {
+   "fieldname": "development_type",
+   "fieldtype": "Select",
+   "label": "Development Type",
+   "options": "Backend\nFrontend\nMobile\nWebDevelopment\nApplication Development"
+  },
+  {
+   "fieldname": "total_sup_projects",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Total sup projects"
+  },
+  {
+   "fieldname": "total_sprints",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Total Sprints"
+  },
+  {
+   "fieldname": "total_tasks",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Total Tasks"
+  },
+  {
+   "fieldname": "column_break_tpnd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_sup_projects_expected_hours",
+   "fieldtype": "Date",
+   "is_virtual": 1,
+   "label": "Total sup projects Expected Hours"
+  },
+  {
+   "fieldname": "total_sprint_expected_hours",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Total Sprint Expected Hours"
+  },
+  {
+   "fieldname": "total_tasks_expected_hours",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Total Tasks Expected Hours"
+  },
+  {
+   "fieldname": "project_time_section",
+   "fieldtype": "Section Break",
+   "label": "Project Time"
+  },
+  {
+   "fieldname": "total_project_hours",
+   "fieldtype": "Int",
+   "label": "Total Project Hours"
+  },
+  {
+   "fieldname": "total_sprints_hours",
+   "fieldtype": "Int",
+   "label": "Total Sprints Hours"
+  },
+  {
+   "fieldname": "total_tasks_hours",
+   "fieldtype": "Int",
+   "label": "Total Tasks Hours"
+  },
+  {
+   "fieldname": "customer_section",
+   "fieldtype": "Section Break",
+   "label": "Customer"
+  },
+  {
+   "fieldname": "customer_details",
+   "fieldtype": "Data",
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
+  },
+  {
+   "fieldname": "customer_phone_number",
+   "fieldtype": "Data",
+   "label": "Customer Phone number "
+  },
+  {
+   "fieldname": "column_break_wtzy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_person",
+   "fieldtype": "Data",
+   "label": "Contact Person "
+  },
+  {
+   "fieldname": "contact_person_mobil",
+   "fieldtype": "Data",
+   "label": "Contact Person Mobil"
+  },
+  {
+   "fieldname": "contact_person_email",
+   "fieldtype": "Data",
+   "label": "Contact Person Email "
+  },
+  {
+   "fieldname": "role_section",
+   "fieldtype": "Section Break",
+   "label": "Role"
+  },
+  {
+   "fieldname": "table_sdso",
+   "fieldtype": "Table",
+   "options": "Roles  Employee Structure"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-03-18 17:04:05.249686",
+ "modified_by": "Administrator",
+ "module": "Sanaamstride",
+ "name": "Project",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-18 16:53:35.601300",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "role_section",
+  "role_type",
+  "employee",
+  "active"
+ ],
+ "fields": [
+  {
+   "fieldname": "role_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Role Type",
+   "options": "Manager\nEmployee\nsupervisor"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "default": "1",
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Active"
+  },
+  {
+   "fieldname": "role_section",
+   "fieldtype": "Section Break",
+   "label": "Role",
+   "options": "Roles  Employee Structure"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-03-18 16:59:51.309407",
+ "modified_by": "Administrator",
+ "module": "Sanaamstride",
+ "name": "Roles  Employee Structure",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
