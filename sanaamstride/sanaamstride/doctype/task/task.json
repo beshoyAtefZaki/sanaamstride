@@ -1,0 +1,204 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-03-19 13:36:34.110475",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "task_information_section",
+  "name1",
+  "naming_series",
+  "column_break_oiwk",
+  "type",
+  "status",
+  "project_section",
+  "project",
+  "is_sprint",
+  "employee",
+  "column_break_svna",
+  "task_descerption",
+  "tasked_assigned_employee_section",
+  "tasked_assigned_employee",
+  "date_section",
+  "expected_start_date",
+  "start_date",
+  "expected_hours_count",
+  "column_break_ggxa",
+  "expected_end_date",
+  "end_date",
+  "actual_hours_count",
+  "related_task_section",
+  "required_task",
+  "comments_section",
+  "text_editor_jpgu"
+ ],
+ "fields": [
+  {
+   "fieldname": "task_information_section",
+   "fieldtype": "Section Break",
+   "label": "Task Information"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Name"
+  },
+  {
+   "default": "Task-",
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Naming series"
+  },
+  {
+   "fieldname": "column_break_oiwk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Type",
+   "options": "Sprint\nTask\nError"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "ToDo\nOn Progress\nHold\nCompleted\nCanceled"
+  },
+  {
+   "fieldname": "project_section",
+   "fieldtype": "Section Break",
+   "label": "Project"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_sprint",
+   "fieldtype": "Check",
+   "label": "Is Sprint"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "column_break_svna",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "task_descerption",
+   "fieldtype": "Small Text",
+   "label": "Task Descerption"
+  },
+  {
+   "fieldname": "tasked_assigned_employee_section",
+   "fieldtype": "Section Break",
+   "label": "Tasked Assigned Employee"
+  },
+  {
+   "fieldname": "tasked_assigned_employee",
+   "fieldtype": "Table",
+   "label": "Tasked Assigned Employee",
+   "options": "Tasked Assigned Employee"
+  },
+  {
+   "fieldname": "date_section",
+   "fieldtype": "Section Break",
+   "label": "Date"
+  },
+  {
+   "fieldname": "expected_start_date",
+   "fieldtype": "Date",
+   "label": "Expected start date"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start date"
+  },
+  {
+   "fieldname": "expected_hours_count",
+   "fieldtype": "Int",
+   "label": "Expected Hours Count"
+  },
+  {
+   "fieldname": "column_break_ggxa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "expected_end_date",
+   "fieldtype": "Date",
+   "label": "Expected end date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End date"
+  },
+  {
+   "fieldname": "actual_hours_count",
+   "fieldtype": "Int",
+   "label": "Actual Hours Count"
+  },
+  {
+   "fieldname": "related_task_section",
+   "fieldtype": "Section Break",
+   "label": "Related Task"
+  },
+  {
+   "fieldname": "required_task",
+   "fieldtype": "Link",
+   "label": "Required Task",
+   "options": "Task"
+  },
+  {
+   "fieldname": "comments_section",
+   "fieldtype": "Section Break",
+   "label": "Comments"
+  },
+  {
+   "fieldname": "text_editor_jpgu",
+   "fieldtype": "Text Editor"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-03-19 14:40:41.902406",
+ "modified_by": "Administrator",
+ "module": "Sanaamstride",
+ "name": "Task",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
