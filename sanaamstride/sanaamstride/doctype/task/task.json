@@ -1,0 +1,128 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-19 18:48:20.273613",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "name1"
+ ],
+ 
+    "name": "Task",
+    "module": "Sanaamstride",
+    "custom": 0,
+    "fields": [
+        {
+            "fieldname": "name1",
+            "fieldtype": "Data",
+            "label": "Name"
+        },
+        {
+            "fieldname": "type",
+            "fieldtype": "Select",
+            "label": "Type",
+            "options": "Sprint\nTask\nError"
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Todo\nOn Progress\nHold\nCompleted\nReview\nCancelled"
+        },
+        {
+            "fieldname": "project",
+            "fieldtype": "Link",
+            "label": "Project",
+            "options": "Project"
+        },
+        {
+            "fieldname": "is_sprint",
+            "fieldtype": "Check",
+            "label": "Is Sprint"
+        },
+        {
+            "fieldname": "parent_task",
+            "fieldtype": "Link",
+            "label": "Parent Task",
+            "options": "Task",
+            "depends_on": "eval:doc.is_sprint == 1"
+        },
+        {
+            "fieldname": "task_description",
+            "fieldtype": "Small Text",
+            "label": "Task Description"
+        },
+        {
+            "fieldname": "task_assigned_employee",
+            "fieldtype": "Child Table",
+            "options": "Employee",
+            "label": "Tasked Assigned Employee",
+            "depends_on": "eval:doc.is_sprint == 1"
+        },
+        {
+            "fieldname": "employee",
+            "fieldtype": "Link",
+            "label": "Employee",
+            "options": "Employee",
+            "depends_on": "eval:doc.is_sprint == 0"
+        },
+        {
+            "fieldname": "expected_start_date",
+            "fieldtype": "Date",
+            "label": "Expected Start Date"
+        },
+        {
+            "fieldname": "expected_end_date",
+            "fieldtype": "Date",
+            "label": "Expected End Date"
+        },
+        {
+            "fieldname": "start_date",
+            "fieldtype": "Date",
+            "label": "Start Date"
+        },
+        {
+            "fieldname": "end_date",
+            "fieldtype": "Date",
+            "label": "End Date"
+        },
+        {
+            "fieldname": "expected_hours_count",
+            "fieldtype": "Float",
+            "label": "Expected Hours Count"
+        },
+        {
+            "fieldname": "actual_hours_count",
+            "fieldtype": "Float",
+            "label": "Actual Hours Count"
+        },
+        {
+            "fieldname": "required_task",
+            "fieldtype": "Link",
+            "label": "Required Task",
+            "options": "Task",
+            "depends_on": "eval:doc.is_sprint == 0 && doc.type == 'Task'"
+        },
+        {
+            "fieldname": "comments",
+            "fieldtype": "Text",
+            "label": "Comments"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "create": 1,
+            "read": 1,
+            "write": 1,
+            "delete": 1,
+            "share": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "report": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC"
+}
