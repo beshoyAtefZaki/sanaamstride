@@ -4,6 +4,7 @@
 frappe.ui.form.on("Project", {
     create_project_dialog(frm){
 
+        
         // Create new child project with current project as parent
         let d = new frappe.ui.Dialog({
             title: 'Enter details',
