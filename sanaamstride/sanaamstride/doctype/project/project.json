@@ -254,7 +254,7 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
-   "label": "namin Series",
+   "label": "Naming Series",
    "options": "PRO-.####"
   }
  ],
@@ -263,9 +263,13 @@
   {
    "link_doctype": "Project",
    "link_fieldname": "parent_project"
+  },
+  {
+   "link_doctype": "Task",
+   "link_fieldname": "name"
   }
  ],
- "modified": "2025-03-18 22:43:56.779526",
+ "modified": "2025-03-19 15:21:29.165987",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project",
