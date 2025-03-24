@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2025-03-24 13:46:22.708371",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -13,7 +14,8 @@
   "actual_hours",
   "new_task_status",
   "posted_date",
-  "parent_project_status"
+  "parent_project_status",
+  "naming_series"
  ],
  "fields": [
   {
@@ -65,14 +67,22 @@
    "fieldname": "parent_project_status",
    "fieldtype": "Data",
    "label": "Parent Project Status"
+  },
+  {
+   "default": "SheetEntery-",
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Naming Series"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-24 13:51:32.993457",
+ "modified": "2025-03-24 16:21:15.771941",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project Sheet Entry",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

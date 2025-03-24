@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2025-03-24 13:36:03.639012",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -8,6 +9,7 @@
   "section_break_eh3r",
   "employee",
   "date",
+  "naming_series",
   "employee_tasks_sheet",
   "amended_from"
  ],
@@ -40,6 +42,13 @@
    "options": "Employee tasks sheet"
   },
   {
+   "default": "TimeSheet-",
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Naming Series"
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -53,10 +62,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-24 14:26:36.014303",
+ "modified": "2025-03-24 16:20:47.786693",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Time Sheet",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
