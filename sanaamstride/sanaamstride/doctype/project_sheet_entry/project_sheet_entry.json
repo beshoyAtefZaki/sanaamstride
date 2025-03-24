@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-24 13:46:22.708371",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "task",
+  "project",
+  "parent_project",
+  "sprint",
+  "actual_hours",
+  "new_task_status",
+  "posted_date",
+  "parent_project_status"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "task",
+   "fieldtype": "Link",
+   "label": "Task",
+   "options": "Task"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "parent_project",
+   "fieldtype": "Link",
+   "label": "Parent Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "sprint",
+   "fieldtype": "Link",
+   "label": "Sprint",
+   "options": "Task"
+  },
+  {
+   "fieldname": "actual_hours",
+   "fieldtype": "Int",
+   "label": "Actual Hours"
+  },
+  {
+   "fieldname": "new_task_status",
+   "fieldtype": "Data",
+   "label": "New Task Status"
+  },
+  {
+   "fieldname": "posted_date",
+   "fieldtype": "Date",
+   "label": "Posted Date"
+  },
+  {
+   "fieldname": "parent_project_status",
+   "fieldtype": "Data",
+   "label": "Parent Project Status"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-03-24 13:51:32.993457",
+ "modified_by": "Administrator",
+ "module": "Sanaamstride",
+ "name": "Project Sheet Entry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
