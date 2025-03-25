@@ -74,6 +74,7 @@
    "depends_on": "eval:doc.is_parent ==0 ;",
    "fieldname": "parent_project",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Parent Project",
    "options": "Project"
   },
@@ -99,12 +100,12 @@
   },
   {
    "fieldname": "expected_start_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Expected Start Date"
   },
   {
    "fieldname": "start_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Start Date"
   },
@@ -114,12 +115,12 @@
   },
   {
    "fieldname": "expected_end_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Expected End Date"
   },
   {
    "fieldname": "end_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "End Date"
   },
   {
@@ -266,10 +267,10 @@
   },
   {
    "link_doctype": "Task",
-   "link_fieldname": "name"
+   "link_fieldname": "project"
   }
  ],
- "modified": "2025-03-19 15:21:29.165987",
+ "modified": "2025-03-25 23:10:37.763349",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project",

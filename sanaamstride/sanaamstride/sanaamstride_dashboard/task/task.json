@@ -1,0 +1,25 @@
+{
+ "cards": [],
+ "charts": [
+  {
+   "chart": "Tasks",
+   "width": "Half"
+  },
+  {
+   "chart": "Projects",
+   "width": "Half"
+  }
+ ],
+ "creation": "2025-03-25 21:29:23.003304",
+ "dashboard_name": "Task",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 1,
+ "is_standard": 1,
+ "modified": "2025-03-25 21:48:33.818488",
+ "modified_by": "Administrator",
+ "module": "Sanaamstride",
+ "name": "Task",
+ "owner": "Administrator"
+}

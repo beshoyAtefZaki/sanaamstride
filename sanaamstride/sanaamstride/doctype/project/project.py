@@ -9,8 +9,14 @@ class Project(Document):
 	@property
 	def total_sup_projects(self):
 		return (frappe.db.count("Project", filters={"parent_project": self.name}))
-	
+	def set_dates(self) :
+		if self.status not in ["Waiting"] :
+			if not self.expected_start_date :
+				self.expected_start_date = frappe.utils.today()
+			if not self.start_date :
+				self.start_date = frappe.utils.today()
 	def validate(self):
+		self.set_dates()
 		self.validate_parent_project()
 		
 

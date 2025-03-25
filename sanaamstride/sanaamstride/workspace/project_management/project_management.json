@@ -1,0 +1,58 @@
+{
+ "charts": [
+  {
+   "chart_name": "Tasks",
+   "label": "Tasks"
+  },
+  {
+   "chart_name": "Projects",
+   "label": "Projects"
+  }
+ ],
+ "content": "[{\"id\":\"JMrcYqtV0v\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Project management</span>\",\"col\":12}},{\"id\":\"usNdFsIP88\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Projects\",\"col\":12}},{\"id\":\"fhXxUqxZsG\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Tasks\",\"col\":12}},{\"id\":\"uBWj-pBEet\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Task\",\"col\":4}},{\"id\":\"1-r7481KWA\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Employee\",\"col\":4}},{\"id\":\"3DrDo3Kvtk\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Project\",\"col\":4}},{\"id\":\"iSKoUuHnD2\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Time Sheet\",\"col\":4}}]",
+ "creation": "2025-03-23 23:27:09.393171",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Project management",
+ "links": [],
+ "modified": "2025-03-25 21:49:36.400762",
+ "modified_by": "Administrator",
+ "module": "Sanaamstride",
+ "name": "Project management",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Project",
+   "label": "Project",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Task",
+   "label": "Task",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Time Sheet",
+   "label": "Time Sheet",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Employee",
+   "label": "Employee",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 28.0,
+ "shortcuts": [],
+ "title": "Project management"
+}
