@@ -2,17 +2,22 @@ import frappe
 from frappe import _
 
 @frappe.whitelist()
-def get_projectList(*args, **kwargs):
+def get_projectList(project_name=None, **kwargs):
     """
-    Returns all parent projects, their child projects,
-    and for each child project its sprints and tasks.
+    Returns all parent projects (is_parent = 1), filtered by project_name if provided,
+    each with its child projects, and for each child project its sprints and tasks.
     """
     response = []
+
+    # Build parent filters
+    parent_filters = {"is_parent": 1}
+    if project_name:
+        parent_filters["project_name"] = ["like", f"%{project_name}%"]
 
     # 1) Fetch parent projects
     parents = frappe.get_all(
         "Project",
-        filters={"is_parent": 1},
+        filters=parent_filters,
         fields=["name", "project_name", "status"]
     )
 
