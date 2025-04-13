@@ -80,6 +80,15 @@ frappe.ui.form.on("Task", {
         if (frm.doc.is_sprint) {
             frm.events.add_create_task(frm);
         }
+
+        frm.set_query("employee", function() {
+            return {
+                query :"sanaamstride.sanaamstride.doctype.task.task.get_employee",
+                
+                filters : {"project": frm.doc.project}  
+            }
+              
+        });
        
     },
     type:(frm) => {
@@ -106,9 +115,10 @@ frappe.ui.form.on("Task", {
             }
         }
     },
-
+    
     onload: function(frm) {
         // Set the query for the 'project' field to only show projects where is_parent is true
+
         frm.set_query("project", function() {
             return {
                 filters: {

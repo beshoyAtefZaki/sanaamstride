@@ -83,3 +83,21 @@ def create_sprint_task_from_project(current_project, task_name, is_sprint=1, des
         new_task.sprint = sprint
     new_task.insert()  # Save the new Task document
     return new_task.name
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_employee(doctype, txt, searchfield, start, page_len, filters) :
+   
+    # we need project as filter 
+    parent_name = filters.get("project")
+    Child  = frappe.qb.DocType("Roles  Employee Structure")
+    Employee = frappe.qb.DocType("Employee")
+    sql_query = (
+		frappe.qb.from_(Child).inner_join(Employee).on(Child.employee == Employee.name).
+		select(Child.employee , Employee.employee_name , Employee.phone , Employee.email).
+        where((Child.parent == f"{parent_name} ") & (Child.role_type == "Employee")  )
+	
+	)
+    if len(txt) >3 :
+        sql_query.where(Employee.phone.like(f"%{txt}%"))
+    return sql_query.run()
