@@ -1,7 +1,7 @@
 import frappe 
 
-from sanaamstride.api.project_helper.project import get_projectList
+from sanaamstride.api.project_helper.project import get_all
 
 @frappe.whitelist()
-def get_all(*args , **kwargs) :
-    return get_projectList(*args , **kwargs)
+def get_all_projects(*args , **kwargs) :
+    return get_all(*args , **kwargs)

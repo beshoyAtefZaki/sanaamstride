@@ -1,8 +1,14 @@
 import frappe 
 
 
+#child project list with sprints and tasks .
 
-def get_projectList(*args , **kwargs) :
+@frappe.whitelist(allow_guest=True)
+def get_all():
+    """
+    API endpoint to get all projects with their child projects, sprints and tasks
+    URL: /api/method/sanaamstride.api.project.get_all
+    """
     response = []
     parent_projects = frappe.get_all("Project", filters = {"is_parent" : 1} ,
                                                 fields = ["name" ,
