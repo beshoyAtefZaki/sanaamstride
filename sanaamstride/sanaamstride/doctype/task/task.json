@@ -11,16 +11,15 @@
   "naming_series",
   "column_break_oiwk",
   "type",
-  "sprint",
   "status",
-  "descerption_section",
-  "task_descerption",
+  "sprint",
   "project_section",
   "project",
   "is_sprint",
-  "column_break_svna",
-  "tasked_assigned_employee_section",
   "employee",
+  "column_break_svna",
+  "task_descerption",
+  "tasked_assigned_employee_section",
   "tasked_assigned_employee",
   "date_section",
   "expected_start_date",
@@ -42,14 +41,11 @@
    "label": "Task Information"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "name1",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Name",
-   "reqd": 1
+   "label": "Name"
   },
   {
    "default": "Task-",
@@ -63,7 +59,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "type",
    "fieldtype": "Select",
    "in_preview": 1,
@@ -72,10 +67,8 @@
    "options": "Sprint\nTask\nError"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "status",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Status",
@@ -89,9 +82,6 @@
   {
    "fieldname": "project",
    "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
    "label": "Project",
    "options": "Project"
   },
@@ -102,7 +92,6 @@
    "label": "Is Sprint"
   },
   {
-   "depends_on": "eval:doc.is_sprint==0;",
    "fieldname": "employee",
    "fieldtype": "Link",
    "label": "Employee",
@@ -113,7 +102,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "task_descerption",
    "fieldtype": "Small Text",
    "label": "Task Descerption"
@@ -124,7 +112,6 @@
    "label": "Tasked Assigned Employee"
   },
   {
-   "depends_on": "eval:doc.is_sprint==1;",
    "fieldname": "tasked_assigned_employee",
    "fieldtype": "Table",
    "label": "Tasked Assigned Employee",
@@ -136,7 +123,6 @@
    "label": "Date"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "expected_start_date",
    "fieldtype": "Date",
    "label": "Expected start date"
@@ -144,7 +130,6 @@
   {
    "fieldname": "start_date",
    "fieldtype": "Date",
-   "in_list_view": 1,
    "label": "Start date"
   },
   {
@@ -157,7 +142,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "expected_end_date",
    "fieldtype": "Date",
    "label": "Expected end date"
@@ -170,9 +154,7 @@
   {
    "fieldname": "actual_hours_count",
    "fieldtype": "Int",
-   "in_preview": 1,
-   "label": "Actual Hours Count",
-   "read_only": 1
+   "label": "Actual Hours Count"
   },
   {
    "fieldname": "related_task_section",
@@ -195,27 +177,15 @@
    "fieldtype": "Text Editor"
   },
   {
-   "depends_on": "eval:doc.type != \"Sprint\";",
    "fieldname": "sprint",
    "fieldtype": "Link",
    "label": "Sprint",
    "options": "Task"
-  },
-  {
-   "fieldname": "descerption_section",
-   "fieldtype": "Section Break",
-   "label": "Descerption"
   }
  ],
  "index_web_pages_for_search": 1,
- "is_calendar_and_gantt": 1,
- "links": [
-  {
-   "link_doctype": "Task",
-   "link_fieldname": "sprint"
-  }
- ],
- "modified": "2025-03-25 23:18:23.345772",
+ "links": [],
+ "modified": "2025-03-26 13:19:44.872205",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Task",
@@ -235,11 +205,7 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 1,
- "track_seen": 1,
- "track_views": 1
+ "states": []
 }

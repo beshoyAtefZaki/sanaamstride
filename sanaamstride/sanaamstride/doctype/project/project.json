@@ -30,6 +30,7 @@
   "total_sup_projects_expected_hours",
   "total_sprint_expected_hours",
   "total_tasks_expected_hours",
+  "max_hours",
   "project_time_section",
   "total_project_hours",
   "total_sprints_hours",
@@ -257,6 +258,12 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "PRO-.####"
+  },
+  {
+   "fieldname": "max_hours",
+   "fieldtype": "Int",
+   "label": "Max Hours ",
+   "mandatory_depends_on": "eval:doc.is_parent ==0 ;"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -270,7 +277,7 @@
    "link_fieldname": "project"
   }
  ],
- "modified": "2025-03-25 23:10:37.763349",
+ "modified": "2025-04-13 20:21:12.459974",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project",

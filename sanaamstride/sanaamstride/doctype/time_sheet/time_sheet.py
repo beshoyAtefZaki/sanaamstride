@@ -33,7 +33,12 @@ class TimeSheet(Document):
             project_sheet.employee = self.employee    # Assign employee
             project_sheet.task = row.task             # Assign task
             project_sheet.project = row.project       # Assign project
-
+            project_sheet.actual_hours = row.actual_hours  # Assign actual hours
             project_sheet.insert(ignore_permissions=True)
-
+            #update task actual hours
+            task_doc = frappe.get_doc("Task", row.task)
+            task_doc.actual_hours_count += row.actual_hours
+            task_doc.save(ignore_permissions=True)
+            #update project actual hours
+            frappe.db.commit()
         frappe.msgprint(_("Project Sheet Entries created successfully."), alert=True)
