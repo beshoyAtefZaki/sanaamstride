@@ -277,7 +277,7 @@
    "link_fieldname": "project"
   }
  ],
- "modified": "2025-04-13 20:21:12.459974",
+ "modified": "2025-04-15 20:16:58.318822",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project",
@@ -298,6 +298,7 @@
   }
  ],
  "quick_entry": 1,
+ "search_fields": "project_name",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
