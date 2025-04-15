@@ -4,6 +4,20 @@ from frappe import _
 from frappe.utils import today
 class Task(Document):
 
+    def before_insert(self):
+        """Validate Expected Hours Count for sprint tasks before inserting"""
+        if self.is_sprint and not self.expected_hours_count:
+            frappe.throw(
+                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
+            )
+
+    def before_save(self):
+        """Validate Expected Hours Count for sprint tasks before saving"""
+        if self.is_sprint and not self.expected_hours_count:
+            frappe.throw(
+                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
+            )
+
     def update_status(self) :
         if self.status not in ["ToDo"] :
             """
@@ -56,6 +70,12 @@ class Task(Document):
         # Validate that any child task in the child table is only of type "Task" or "Error"
         self.validate_child_task_types()
 
+        # Validate Expected Hours Count for sprint tasks
+        if self.is_sprint and not self.expected_hours_count:
+            frappe.throw(
+                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
+            )
+
     def validate_child_task_types(self):
         """
         Ensure that if the Task has a child table (named "child_tasks"),
@@ -68,17 +88,19 @@ class Task(Document):
 
 
 @frappe.whitelist()
-def create_sprint_task_from_project(current_project, task_name, is_sprint=1, description=None ,sprint = None):
+def create_sprint_task_from_project(current_project, task_name, is_sprint=1, description=None ,sprint = None, expected_hours_count=None):
     """
     Create a new Task with the sprint flag set to true.
-    In this version, since the Task doctype no longer includes fields for project linkage,
-    we only set task_name, is_sprint, and description.
     """
+    if is_sprint and not expected_hours_count:
+        frappe.throw(_("Expected Hours Count is required for Sprint tasks. Please enter the expected hours."))
+
     new_task = frappe.new_doc("Task")
     new_task.name1 = task_name
     new_task.is_sprint = int(is_sprint)  # Force is_sprint to true (1)
     new_task.description = description
     new_task.project = current_project
+    new_task.expected_hours_count = expected_hours_count
     if sprint :
         new_task.sprint = sprint
     new_task.insert()  # Save the new Task document

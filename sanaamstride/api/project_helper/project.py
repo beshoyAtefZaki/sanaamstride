@@ -52,7 +52,7 @@ def get_all():
             "child_projects": child_projects_with_details
         })
     return response
-=======
+
 import frappe
 from frappe import _
 

@@ -126,5 +126,19 @@ frappe.ui.form.on("Task", {
                 }
             };
         });
+    },
+
+    validate: function(frm) {
+        // Validate Expected Hours Count for sprint tasks
+        if (frm.doc.is_sprint && !frm.doc.expected_hours_count) {
+            frappe.throw(__("Expected Hours Count is required for Sprint tasks. Please enter the expected hours."));
+        }
+    },
+
+    expected_hours_count: function(frm) {
+        // When Expected Hours Count is changed, validate if it's a sprint
+        if (frm.doc.is_sprint && !frm.doc.expected_hours_count) {
+            frappe.throw(__("Expected Hours Count is required for Sprint tasks. Please enter the expected hours."));
+        }
     }
 });
