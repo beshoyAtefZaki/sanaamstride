@@ -105,7 +105,8 @@ frappe.ui.form.on("Project", {
 						task_name: values.task_name,
 						project: frm.doc.name,
 						is_sprint: values.is_sprint,  // will always be 1
-						description: values.description
+						description: values.description ,
+						expected_hours_count : 10
 					},
 					callback: function(r) {
 						if (r.message) {

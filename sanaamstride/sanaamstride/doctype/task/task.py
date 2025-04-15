@@ -71,10 +71,10 @@ class Task(Document):
         self.validate_child_task_types()
 
         # Validate Expected Hours Count for sprint tasks
-        if self.is_sprint and not self.expected_hours_count:
-            frappe.throw(
-                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
-            )
+        # if self.is_sprint and not self.expected_hours_count:
+        #     frappe.throw(
+        #         _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
+        #     )
 
     def validate_child_task_types(self):
         """
@@ -92,8 +92,8 @@ def create_sprint_task_from_project(current_project, task_name, is_sprint=1, des
     """
     Create a new Task with the sprint flag set to true.
     """
-    if is_sprint and not expected_hours_count:
-        frappe.throw(_("Expected Hours Count is required for Sprint tasks. Please enter the expected hours."))
+    # if is_sprint and not expected_hours_count:
+    #     frappe.throw(_("Expected Hours Count is required for Sprint tasks. Please enter the expected hours."))
 
     new_task = frappe.new_doc("Task")
     new_task.name1 = task_name
