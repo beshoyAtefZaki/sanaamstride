@@ -28,6 +28,8 @@ frappe.ui.form.on("Task", {
 			size: 'small',
 			primary_action_label: 'Submit',
 			primary_action(values) {
+
+                console.log( "Data  --- " ,values.is_sprint);
 				frappe.call({
 					method: 'sanaamstride.sanaamstride.doctype.task.task.create_sprint_task_from_project',
 					args: {

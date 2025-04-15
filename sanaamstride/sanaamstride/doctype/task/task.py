@@ -6,14 +6,14 @@ class Task(Document):
 
     def before_insert(self):
         """Validate Expected Hours Count for sprint tasks before inserting"""
-        if self.is_sprint and not self.expected_hours_count:
+        if self.is_sprint  == 1 and not self.expected_hours_count:
             frappe.throw(
                 _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
             )
 
     def before_save(self):
         """Validate Expected Hours Count for sprint tasks before saving"""
-        if self.is_sprint and not self.expected_hours_count:
+        if self.is_sprint ==1  and not self.expected_hours_count:
             frappe.throw(
                 _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
             )
@@ -94,10 +94,10 @@ def create_sprint_task_from_project(current_project, task_name, is_sprint=1, des
     """
     # if is_sprint and not expected_hours_count:
     #     frappe.throw(_("Expected Hours Count is required for Sprint tasks. Please enter the expected hours."))
-
+  
     new_task = frappe.new_doc("Task")
     new_task.name1 = task_name
-    new_task.is_sprint = int(is_sprint)  # Force is_sprint to true (1)
+    new_task.is_sprint = 1 if not sprint else 0 # Force is_sprint to true (1)
     new_task.description = description
     new_task.project = current_project
     new_task.expected_hours_count = expected_hours_count

@@ -190,9 +190,15 @@
    "options": "Task"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-04-15 20:08:32.398146",
+ "links": [
+  {
+   "link_doctype": "Task",
+   "link_fieldname": "sprint"
+  }
+ ],
+ "modified": "2025-04-15 21:50:18.379361",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Task",

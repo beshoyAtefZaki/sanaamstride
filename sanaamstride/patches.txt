@@ -6,3 +6,4 @@
 # Patches added in this section will be executed after doctypes are migrated
 
 sanaamstride.patches.create_required_roles 
+sanaamstride.patches.main 
