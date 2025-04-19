@@ -29,6 +29,7 @@
   "expected_end_date",
   "end_date",
   "actual_hours_count",
+  "total_hours",
   "related_task_section",
   "required_task",
   "comments_section",
@@ -161,7 +162,8 @@
   {
    "fieldname": "actual_hours_count",
    "fieldtype": "Int",
-   "label": "Actual Hours Count"
+   "label": "Actual Hours Count",
+   "read_only": 1
   },
   {
    "fieldname": "related_task_section",
@@ -188,6 +190,12 @@
    "fieldtype": "Link",
    "label": "Sprint",
    "options": "Task"
+  },
+  {
+   "fieldname": "total_hours",
+   "fieldtype": "Int",
+   "is_virtual": 1,
+   "label": "Total Hours"
   }
  ],
  "grid_page_length": 50,
@@ -198,7 +206,7 @@
    "link_fieldname": "sprint"
   }
  ],
- "modified": "2025-04-15 21:50:18.379361",
+ "modified": "2025-04-19 17:35:28.173842",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Task",

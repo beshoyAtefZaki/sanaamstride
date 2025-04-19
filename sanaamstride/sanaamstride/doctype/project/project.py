@@ -170,31 +170,71 @@ def copy_employees_to_sprint(parent_project, sprint_task):
         frappe.throw(_("Error copying employees to sprint task: {0}").format(str(e)))
 
 @frappe.whitelist()
-def calculate_total_actual_hours(sprint_name):
-    """Calculate total actual hours for completed tasks in a sprint and update sprint's actual hours count."""
-    try:
-        # First verify that the sprint exists
-        if not frappe.db.exists("Task", sprint_name):
-            frappe.throw(_("Sprint '{0}' not found").format(sprint_name))
-            
-        # Fetch all tasks related to the sprint
-        tasks = frappe.get_all("Task", filters={"sprint": sprint_name, "status": "Completed"}, fields=["name", "actual_hours_count"])
-        
-        # Sum the actual hours of completed tasks
-        total_hours = sum(task.get("actual_hours_count", 0) for task in tasks)
-        
-        # Create a breakdown of actual hours for each task
-        task_hours = {task['name']: task.get("actual_hours_count", 0) for task in tasks}
-        
-        # Update the sprint's actual_hours_count
-        sprint_doc = frappe.get_doc("Task", sprint_name)
-        sprint_doc.actual_hours_count = total_hours
-        sprint_doc.save(ignore_permissions=True)
-        
-        frappe.db.commit()
-        
-        frappe.msgprint(_("Sprint total hours updated to: {0}").format(total_hours))
-        return total_hours, task_hours
-    except Exception as e:
-        frappe.logger().error(f"Error calculating total actual hours for sprint {sprint_name}: {str(e)}")
-        frappe.throw(_("Error calculating total actual hours: {0}").format(str(e)))
+def calculate_total_actual_hours(sprint_name = None):
+	if not sprint_name :
+		frappe.throw(_("Sprint name is required."))
+	"""Calculate total actual hours for completed tasks in a sprint and update sprint's actual hours count."""
+	try:
+		# First verify that the sprint exists
+		if not frappe.db.exists("Task", sprint_name):
+			frappe.throw(_("Sprint '{0}' not found").format(sprint_name))
+			
+		# Fetch all tasks related to the sprint
+		tasks = frappe.get_all("Task", filters={"sprint": sprint_name, "status": "Completed"}, fields=["name", "actual_hours_count"])
+		
+		# Sum the actual hours of completed tasks
+		total_hours = sum(task.get("actual_hours_count", 0) for task in tasks)
+		
+		# Create a breakdown of actual hours for each task
+		task_hours = {task['name']: task.get("actual_hours_count", 0) for task in tasks}
+		
+		# Update the sprint's actual_hours_count
+		sprint_doc = frappe.get_doc("Task", sprint_name)
+		sprint_doc.actual_hours_count = total_hours
+		sprint_doc.save(ignore_permissions=True)
+		
+		frappe.db.commit()
+		
+		frappe.msgprint(_("Sprint total hours updated to: {0}").format(total_hours))
+		return total_hours, task_hours
+	except Exception as e:
+		frappe.logger().error(f"Error calculating total actual hours for sprint {sprint_name}: {str(e)}")
+		frappe.throw(_("Error calculating total actual hours: {0}").format(str(e)))
+
+
+
+
+def calculate_total_actual_hours_virtual(sprint_name = None):
+	"""
+	convert to calculate actual hours from Project Sheet Entry
+	
+	"""
+	if not sprint_name :
+		frappe.throw(_("Sprint name is required."))
+	"""Calculate total actual hours for completed tasks in a sprint and update sprint's actual hours count."""
+	try:
+		# First verify that the sprint exists
+		if not frappe.db.exists("Task", sprint_name):
+			frappe.throw(_("Sprint '{0}' not found").format(sprint_name))
+			
+		# Fetch all tasks related to the sprint
+		tasks = frappe.get_all("Task", filters={"sprint": sprint_name, "status": "Completed"}, fields=["name", "actual_hours_count"])
+		
+		# Sum the actual hours of completed tasks
+		total_hours = sum(task.get("actual_hours_count", 0) for task in tasks)
+		
+		# Create a breakdown of actual hours for each task
+		task_hours = {task['name']: task.get("actual_hours_count", 0) for task in tasks}
+		
+		# Update the sprint's actual_hours_count
+		# sprint_doc = frappe.get_doc("Task", sprint_name)
+		# sprint_doc.actual_hours_count = total_hours
+		# sprint_doc.save(ignore_permissions=True)
+		
+		# frappe.db.commit()
+		
+		# frappe.msgprint(_("Sprint total hours updated to: {0}").format(total_hours))
+		return total_hours
+	except Exception as e:
+		frappe.logger().error(f"Error calculating total actual hours for sprint {sprint_name}: {str(e)}")
+		frappe.throw(_("Error calculating total actual hours: {0}").format(str(e)))

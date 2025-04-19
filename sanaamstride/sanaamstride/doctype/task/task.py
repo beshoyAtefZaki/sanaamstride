@@ -2,47 +2,96 @@ import frappe
 from frappe.model.document import Document
 from frappe import _
 from frappe.utils import today
+from sanaamstride.sanaamstride.doctype.project.project import calculate_total_actual_hours ,calculate_total_actual_hours_virtual
 class Task(Document):
-
-    def before_insert(self):
-        """Validate Expected Hours Count for sprint tasks before inserting"""
-        if self.is_sprint == 1 and not self.expected_hours_count:
-            frappe.throw(
-                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
-            )
+    def validate(self):
+        self.update_status()
+        self.set_date()
+        self.validate_sprint()
+        # Validation for assigning employees based on sprint flag
         
-        # If this is a sprint task and has a project, copy employees from the project
-        if self.is_sprint and self.project:
-            self.copy_employees_from_project()
-
+        
+        self.validate_child_task_types()
     def before_save(self):
         """Validate Expected Hours Count for sprint tasks before saving"""
-        if self.is_sprint == 1 and not self.expected_hours_count:
-            frappe.throw(
-                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
-            )
+       
             
         # If this is a task (not a sprint) and it has a sprint assigned
-        if not self.is_sprint and self.sprint:
-            # Get the old document if it exists
-            old_doc = None
-            if self.is_new():
-                old_doc = None
-            else:
-                old_doc = frappe.get_doc("Task", self.name)
-            
-            # Check if actual_hours_count has changed
-            if old_doc and old_doc.actual_hours_count != self.actual_hours_count:
-                # Update the sprint's total hours
-                frappe.call(
-                    'sanaamstride.sanaamstride.doctype.project.project.calculate_total_actual_hours',
-                    args={'sprint_name': self.sprint}
-                )
         
         # If this is a sprint task and has a project, copy employees from the project
         if self.is_sprint and self.project:
             self.copy_employees_from_project()
+    def on_change(self) :
+        pass
+        # self.calculate_parent_sprint_hours_()
+        # self.calculate_parent_sprint_hours_()
 
+    @property
+    def total_hours(self) :
+        if not self.is_sprint and self.sprint:
+            if self.actual_hours_count :
+                return int(self.actual_hours_count )
+            return 0
+        else :
+            return calculate_total_actual_hours_virtual(self.name) 
+    def update_status(self):
+        if self.status not in ["ToDo"]:
+            """
+            check if there ara sprint  and sprint status = Todo set the status to In Progress
+            check linked project  and update status if still waitting  
+            check parent project status and update 
+            """
+            if self.sprint:
+                sprint = frappe.get_doc("Task", self.sprint)
+                if sprint.status == "ToDo":
+                    sprint.status = "On Progress"
+                    sprint.save()
+            if self.project:
+                project = frappe.get_doc("Project", self.project)
+                if project.status == "Waiting":
+                    project.status = "on progress"
+                    project.save()
+
+                if project.is_parent == False:
+                    parent_project = frappe.get_doc("Project", project.parent_project)
+                    if parent_project.status == "Waiting":
+                        parent_project.status = "on progress"
+                        parent_project.save()
+    def set_date(self) :
+        #set date if not set 
+        if self.status != "ToDo"    and not self.start_date: 
+            self.start_date = today()
+
+    def validate_sprint(self) :
+        if not self.is_sprint:
+            if self.get("tasked_assigned_employee") and len(self.tasked_assigned_employee) > 0:
+                frappe.throw(
+                    _("You cannot assign employees in the child table unless this is a Sprint (is_sprint = true).")
+                )
+        if self.is_sprint and self.employee:
+            frappe.throw(_("You cannot set an Employee if this Task is marked as a Sprint."))
+        if self.is_sprint == 1 and not self.expected_hours_count:
+            frappe.throw(
+                _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
+            )
+        if getattr(self, "linked_task", None):
+            if self.is_sprint:
+                frappe.throw(
+                    _("You cannot select a linked Task when 'is_sprint' is true.")
+                )
+            linked_doc = frappe.get_doc("Task", self.linked_task)
+            if linked_doc.type != "Task":
+                frappe.throw(
+                    _("Linked Task must have type='Task'. You selected a different type.")
+                )
+
+    def calculate_parent_sprint_hours_(self):
+        if not self.is_sprint and self.sprint:
+            # Get the old document if it exists
+            old_doc = self.get_doc_before_save()
+            # Check if actual_hours_count has changed
+            if old_doc and old_doc.actual_hours_count != self.actual_hours_count:
+                calculate_total_actual_hours(self.sprint)
     def copy_employees_from_project(self):
         """Copy employees from the project's Role table to the sprint's Tasked Assigned Employee table"""
         try:
@@ -89,65 +138,11 @@ class Task(Document):
             frappe.logger().error(f"Error copying employees to sprint task: {str(e)}")
             frappe.msgprint(_("Error copying employees to sprint task: {0}").format(str(e)))
 
-    def update_status(self):
-        if self.status not in ["ToDo"]:
-            """
-            check if there ara sprint  and sprint status = Todo set the status to In Progress
-            check linked project  and update status if still waitting  
-            check parent project status and update 
-            """
-            if self.sprint:
-                sprint = frappe.get_doc("Task", self.sprint)
-                if sprint.status == "ToDo":
-                    sprint.status = "On Progress"
-                    sprint.save()
-            if self.project:
-                project = frappe.get_doc("Project", self.project)
-                if project.status == "Waiting":
-                    project.status = "on progress"
-                    project.save()
+   
 
-                if project.is_parent == False:
-                    parent_project = frappe.get_doc("Project", project.parent_project)
-                    if parent_project.status == "Waiting":
-                        parent_project.status = "on progress"
-                        parent_project.save()
+   
 
-    def validate(self):
-        self.update_status()
-        if self.status != "ToDo"    and not self.start_date: 
-            self.start_date = today()
-         
-        # Validation for assigning employees based on sprint flag
-        if not self.is_sprint:
-            if self.get("tasked_assigned_employee") and len(self.tasked_assigned_employee) > 0:
-                frappe.throw(
-                    _("You cannot assign employees in the child table unless this is a Sprint (is_sprint = true).")
-                )
-
-        if self.is_sprint and self.employee:
-            frappe.throw(_("You cannot set an Employee if this Task is marked as a Sprint."))
-
-        if getattr(self, "linked_task", None):
-            if self.is_sprint:
-                frappe.throw(
-                    _("You cannot select a linked Task when 'is_sprint' is true.")
-                )
-            linked_doc = frappe.get_doc("Task", self.linked_task)
-            if linked_doc.type != "Task":
-                frappe.throw(
-                    _("Linked Task must have type='Task'. You selected a different type.")
-                )
-
-        # Validate that any child task in the child table is only of type "Task" or "Error"
-        self.validate_child_task_types()
-
-        # Validate Expected Hours Count for sprint tasks
-        # if self.is_sprint and not self.expected_hours_count:
-        #     frappe.throw(
-        #         _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
-        #     )
-
+   
     def validate_child_task_types(self):
         """
         Ensure that if the Task has a child table (named "child_tasks"),
