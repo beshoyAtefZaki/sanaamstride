@@ -121,4 +121,80 @@ def create_sup_project(current_project, project_name, parent_project, is_parent=
 		return project.name
 	else:	
 		frappe.throw("You can't create a sub project for another project")
-	
+
+
+@frappe.whitelist()
+def copy_employees_to_sprint(parent_project, sprint_task):
+    """Copy employees from parent project to sprint task"""
+    try:
+        # Debug logging
+        frappe.logger().debug(f"Starting copy_employees_to_sprint: project={parent_project}, task={sprint_task}")
+        
+        # Get parent project
+        parent_project_doc = frappe.get_doc("Project", parent_project)
+        if not parent_project_doc.table_sdso:
+            frappe.msgprint(_("No employees found in the parent project."))
+            return False
+            
+        # Get sprint task
+        sprint_task_doc = frappe.get_doc("Task", sprint_task)
+        
+        # Ensure this is a sprint task
+        if sprint_task_doc.type != "sprint":
+            frappe.throw(_("This task is not marked as a sprint task."))
+        
+        # Clear existing assigned employees
+        sprint_task_doc.set("tasked_assigned_employee", [])
+        
+        # Copy employees from project
+        for role in parent_project_doc.table_sdso:
+            if role.employee:
+                frappe.logger().debug(f"Copying employee {role.employee} to task")
+                sprint_task_doc.append("tasked_assigned_employee", {
+                    "employee": role.employee,
+                    "parentfield": "tasked_assigned_employee",
+                    "parenttype": "Task"
+                })
+        
+        # Save with ignore permissions
+        sprint_task_doc.flags.ignore_permissions = True
+        sprint_task_doc.flags.ignore_links = True
+        sprint_task_doc.save(ignore_permissions=True)
+        frappe.db.commit()
+        
+        frappe.logger().debug("Successfully copied employees to sprint task")
+        return True
+        
+    except Exception as e:
+        frappe.logger().error(f"Error copying employees to sprint: {str(e)}")
+        frappe.throw(_("Error copying employees to sprint task: {0}").format(str(e)))
+
+@frappe.whitelist()
+def calculate_total_actual_hours(sprint_name):
+    """Calculate total actual hours for completed tasks in a sprint and update sprint's actual hours count."""
+    try:
+        # First verify that the sprint exists
+        if not frappe.db.exists("Task", sprint_name):
+            frappe.throw(_("Sprint '{0}' not found").format(sprint_name))
+            
+        # Fetch all tasks related to the sprint
+        tasks = frappe.get_all("Task", filters={"sprint": sprint_name, "status": "Completed"}, fields=["name", "actual_hours_count"])
+        
+        # Sum the actual hours of completed tasks
+        total_hours = sum(task.get("actual_hours_count", 0) for task in tasks)
+        
+        # Create a breakdown of actual hours for each task
+        task_hours = {task['name']: task.get("actual_hours_count", 0) for task in tasks}
+        
+        # Update the sprint's actual_hours_count
+        sprint_doc = frappe.get_doc("Task", sprint_name)
+        sprint_doc.actual_hours_count = total_hours
+        sprint_doc.save(ignore_permissions=True)
+        
+        frappe.db.commit()
+        
+        frappe.msgprint(_("Sprint total hours updated to: {0}").format(total_hours))
+        return total_hours, task_hours
+    except Exception as e:
+        frappe.logger().error(f"Error calculating total actual hours for sprint {sprint_name}: {str(e)}")
+        frappe.throw(_("Error calculating total actual hours: {0}").format(str(e)))

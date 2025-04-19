@@ -6,41 +6,113 @@ class Task(Document):
 
     def before_insert(self):
         """Validate Expected Hours Count for sprint tasks before inserting"""
-        if self.is_sprint  == 1 and not self.expected_hours_count:
+        if self.is_sprint == 1 and not self.expected_hours_count:
             frappe.throw(
                 _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
             )
+        
+        # If this is a sprint task and has a project, copy employees from the project
+        if self.is_sprint and self.project:
+            self.copy_employees_from_project()
 
     def before_save(self):
         """Validate Expected Hours Count for sprint tasks before saving"""
-        if self.is_sprint ==1  and not self.expected_hours_count:
+        if self.is_sprint == 1 and not self.expected_hours_count:
             frappe.throw(
                 _("Expected Hours Count is required for Sprint tasks. Please enter the expected hours.")
             )
+            
+        # If this is a task (not a sprint) and it has a sprint assigned
+        if not self.is_sprint and self.sprint:
+            # Get the old document if it exists
+            old_doc = None
+            if self.is_new():
+                old_doc = None
+            else:
+                old_doc = frappe.get_doc("Task", self.name)
+            
+            # Check if actual_hours_count has changed
+            if old_doc and old_doc.actual_hours_count != self.actual_hours_count:
+                # Update the sprint's total hours
+                frappe.call(
+                    'sanaamstride.sanaamstride.doctype.project.project.calculate_total_actual_hours',
+                    args={'sprint_name': self.sprint}
+                )
+        
+        # If this is a sprint task and has a project, copy employees from the project
+        if self.is_sprint and self.project:
+            self.copy_employees_from_project()
 
-    def update_status(self) :
-        if self.status not in ["ToDo"] :
+    def copy_employees_from_project(self):
+        """Copy employees from the project's Role table to the sprint's Tasked Assigned Employee table"""
+        try:
+            # Get the project document
+            project_doc = frappe.get_doc("Project", self.project)
+            
+            # Check if the project has a parent project
+            if project_doc.parent_project:
+                # Get the parent project document
+                parent_project_doc = frappe.get_doc("Project", project_doc.parent_project)
+                
+                # Check if the parent project has roles
+                if parent_project_doc.get("table_sdso"):
+                    # Clear existing assigned employees
+                    self.set("tasked_assigned_employee", [])
+                    
+                    # Copy employees from parent project
+                    for role in parent_project_doc.table_sdso:
+                        if role.employee:
+                            self.append("tasked_assigned_employee", {
+                                "employee": role.employee,
+                                "parentfield": "tasked_assigned_employee",
+                                "parenttype": "Task"
+                            })
+                    
+                    frappe.msgprint(_("Employees copied from parent project to sprint task."))
+            else:
+                # If no parent project, use the project's own roles
+                if project_doc.get("table_sdso"):
+                    # Clear existing assigned employees
+                    self.set("tasked_assigned_employee", [])
+                    
+                    # Copy employees from project
+                    for role in project_doc.table_sdso:
+                        if role.employee:
+                            self.append("tasked_assigned_employee", {
+                                "employee": role.employee,
+                                "parentfield": "tasked_assigned_employee",
+                                "parenttype": "Task"
+                            })
+                    
+                    frappe.msgprint(_("Employees copied from project to sprint task."))
+        except Exception as e:
+            frappe.logger().error(f"Error copying employees to sprint task: {str(e)}")
+            frappe.msgprint(_("Error copying employees to sprint task: {0}").format(str(e)))
+
+    def update_status(self):
+        if self.status not in ["ToDo"]:
             """
             check if there ara sprint  and sprint status = Todo set the status to In Progress
             check linked project  and update status if still waitting  
             check parent project status and update 
             """
-            if self.sprint :
+            if self.sprint:
                 sprint = frappe.get_doc("Task", self.sprint)
-                if sprint.status == "ToDo" :
+                if sprint.status == "ToDo":
                     sprint.status = "On Progress"
                     sprint.save()
-            if self.project :
+            if self.project:
                 project = frappe.get_doc("Project", self.project)
-                if project.status == "Waiting" :
+                if project.status == "Waiting":
                     project.status = "on progress"
                     project.save()
 
-                if project.is_parent ==False :
+                if project.is_parent == False:
                     parent_project = frappe.get_doc("Project", project.parent_project)
-                    if parent_project.status == "Waiting" :
+                    if parent_project.status == "Waiting":
                         parent_project.status = "on progress"
                         parent_project.save()
+
     def validate(self):
         self.update_status()
         if self.status != "ToDo"    and not self.start_date: 
@@ -121,3 +193,30 @@ def get_employee(doctype, txt, searchfield, start, page_len, filters) :
 	)
      
     return sql_query.run()
+
+@frappe.whitelist()
+def copy_employees_from_project(task_name):
+    """Copy employees from the project's Role table to the sprint's Tasked Assigned Employee table"""
+    try:
+        # Get the task document
+        task_doc = frappe.get_doc("Task", task_name)
+        
+        # Check if this is a sprint task
+        if not task_doc.is_sprint:
+            frappe.throw(_("This task is not a sprint task."))
+        
+        # Check if the task has a project
+        if not task_doc.project:
+            frappe.throw(_("This sprint task does not have a project assigned."))
+        
+        # Call the copy_employees_from_project method
+        task_doc.copy_employees_from_project()
+        
+        # Save the task
+        task_doc.save(ignore_permissions=True)
+        frappe.db.commit()
+        
+        return True
+    except Exception as e:
+        frappe.logger().error(f"Error copying employees to sprint task: {str(e)}")
+        frappe.throw(_("Error copying employees to sprint task: {0}").format(str(e)))

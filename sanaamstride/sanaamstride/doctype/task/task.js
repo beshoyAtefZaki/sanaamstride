@@ -92,6 +92,55 @@ frappe.ui.form.on("Task", {
               
         });
        
+        // Add Calculate Total Hours button for sprint tasks
+        if (frm.doc.is_sprint) {
+            frm.add_custom_button(__('Calculate Total Hours'), function() {
+                frappe.call({
+                    method: 'sanaamstride.sanaamstride.doctype.project.project.calculate_total_actual_hours',
+                    args: {
+                        'sprint_name': frm.doc.name
+                    },
+                    callback: function(r) {
+                        if (r.message) {
+                            let [total_hours, task_hours] = r.message;
+                            frm.set_value('actual_hours_count', total_hours);
+                            frm.save();
+                            
+                            // Show breakdown in a message
+                            let message = __("Total Hours: {0}<br><br>Breakdown:", [total_hours]);
+                            for (let task_name in task_hours) {
+                                message += `<br>${task_name}: ${task_hours[task_name]} hours`;
+                            }
+                            
+                            frappe.msgprint({
+                                title: __('Hours Calculated'),
+                                indicator: 'green',
+                                message: message
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Add Copy Employees button for sprint tasks
+            frm.add_custom_button(__('Copy Employees from Project'), function() {
+                frappe.call({
+                    method: 'sanaamstride.sanaamstride.doctype.task.task.copy_employees_from_project',
+                    args: {
+                        'task_name': frm.doc.name
+                    },
+                    callback: function(r) {
+                        if (r.message) {
+                            frm.reload_doc();
+                            frappe.show_alert({
+                                message: __('Employees copied successfully'),
+                                indicator: 'green'
+                            });
+                        }
+                    }
+                });
+            });
+        }
     },
     type:(frm) => {
        if (frm.doc.type == "Sprint") {
