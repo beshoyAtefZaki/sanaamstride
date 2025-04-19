@@ -64,12 +64,10 @@ def get_projectList(project_name=None, **kwargs):
     """
     response = []
 
-    # Build parent filters
     parent_filters = {"is_parent": 1}
     if project_name:
         parent_filters["project_name"] = ["like", f"%{project_name}%"]
 
-    # 1) Fetch parent projects
     parents = frappe.get_all(
         "Project",
         filters=parent_filters,
@@ -77,7 +75,6 @@ def get_projectList(project_name=None, **kwargs):
     )
 
     for p in parents:
-        # 2) Fetch child projects
         children = frappe.get_all(
             "Project",
             filters={"parent_project": p.name},
@@ -86,19 +83,16 @@ def get_projectList(project_name=None, **kwargs):
 
         enriched_children = []
         for c in children:
-            # 3a) Sprints under this child project
             sprints = frappe.get_all(
                 "Task",
                 filters={"project": c.name, "is_sprint": 1},
                 fields=["name", "name1 as sprint_name", "status"]
             )
-            # 3b) Tasks under this child project
             tasks = frappe.get_all(
                 "Task",
                 filters={"project": c.name, "is_sprint": 0},
                 fields=["name", "name1 as task_name", "status"]
             )
-
             enriched_children.append({
                 "name": c.name,
                 "project_name": c.project_name,
@@ -115,3 +109,38 @@ def get_projectList(project_name=None, **kwargs):
         })
 
     return response
+
+
+@frappe.whitelist()
+def create_project_service(project_name, is_parent=1, parent_project=None, status="Waiting", description="", **kwargs):
+    
+    is_parent = int(is_parent)
+    if not project_name:
+        frappe.throw(_("`project_name` is required."))
+
+    # Validate status
+    valid_statuses = ["Waiting", "on progress", "Hold", "Completed", "Cancels"]
+    if status not in valid_statuses:
+        frappe.throw(_(f"Status cannot be \"{status}\". It should be one of {', '.join(valid_statuses)}"))
+
+    if is_parent not in (0, 1):
+        frappe.throw(_("'is_parent' must be 0 or 1."))
+
+    if is_parent == 0:
+        if not parent_project:
+            frappe.throw(_("`parent_project` is required for a child project."))
+        parent_doc = frappe.get_doc("Project", parent_project)
+        if not parent_doc.is_parent:
+            frappe.throw(_(f"Project {parent_project} is not marked as a parent."))
+
+    proj = frappe.new_doc("Project")
+    proj.project_name = project_name
+    proj.is_parent = is_parent
+    proj.status = status
+    proj.description = description or ""
+    if is_parent == 0:
+        proj.parent_project = parent_project
+
+    proj.insert(ignore_permissions=True)
+    return proj.name
+
