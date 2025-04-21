@@ -27,7 +27,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "On Progress\nCompleted\nOn Review\nHold"
+   "options": "ToDo\nOn Progress\nHold\nCompleted\nOn Review\nCanceled"
   },
   {
    "fieldname": "project",
@@ -67,12 +67,13 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-24 13:45:28.983346",
+ "modified": "2025-04-21 20:55:23.812746",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Employee tasks sheet",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
