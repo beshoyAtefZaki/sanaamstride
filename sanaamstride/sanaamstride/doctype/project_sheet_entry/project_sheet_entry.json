@@ -44,7 +44,7 @@
   },
   {
    "fieldname": "sprint",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Sprint",
    "options": "Task"
   },
@@ -61,7 +61,8 @@
   {
    "fieldname": "posted_date",
    "fieldtype": "Date",
-   "label": "Posted Date"
+   "label": "Posted Date",
+   "options": "Time Sheet"
   },
   {
    "fieldname": "parent_project_status",
@@ -78,7 +79,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-24 16:21:15.771941",
+ "modified": "2025-04-21 12:34:42.374438",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project Sheet Entry",
@@ -98,6 +99,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

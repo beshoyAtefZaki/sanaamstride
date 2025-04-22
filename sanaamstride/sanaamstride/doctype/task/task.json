@@ -29,7 +29,6 @@
   "expected_end_date",
   "end_date",
   "actual_hours_count",
-  "total_hours",
   "related_task_section",
   "required_task",
   "comments_section",
@@ -44,7 +43,6 @@
   {
    "fieldname": "name1",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Name"
@@ -63,7 +61,6 @@
   {
    "fieldname": "type",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Type",
@@ -72,11 +69,10 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Status",
-   "options": "ToDo\nOn Progress\nHold\nCompleted\nCanceled"
+   "options": "ToDo\nOn Progress\nHold\nCompleted\nOn Review\nCanceled"
   },
   {
    "fieldname": "project_section",
@@ -86,10 +82,6 @@
   {
    "fieldname": "project",
    "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
    "label": "Project",
    "options": "Project"
   },
@@ -162,8 +154,7 @@
   {
    "fieldname": "actual_hours_count",
    "fieldtype": "Int",
-   "label": "Actual Hours Count",
-   "read_only": 1
+   "label": "Actual Hours Count"
   },
   {
    "fieldname": "related_task_section",
@@ -190,23 +181,11 @@
    "fieldtype": "Link",
    "label": "Sprint",
    "options": "Task"
-  },
-  {
-   "fieldname": "total_hours",
-   "fieldtype": "Int",
-   "is_virtual": 1,
-   "label": "Total Hours"
   }
  ],
- "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [
-  {
-   "link_doctype": "Task",
-   "link_fieldname": "sprint"
-  }
- ],
- "modified": "2025-04-19 17:35:28.173842",
+ "links": [],
+ "modified": "2025-04-21 20:52:21.209393",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Task",
@@ -226,6 +205,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
