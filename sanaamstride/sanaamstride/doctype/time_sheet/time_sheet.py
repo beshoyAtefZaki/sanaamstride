@@ -10,7 +10,8 @@ class TimeSheet(Document):
     def on_submit(self):
         """On submission, create project sheet entries based on time sheet details."""
         self.create_project_sheet_entries()
-
+    def on_cancel(self):
+        self.create_project_sheet_entries(-1)
     def set_project_from_task(self):
         """Fetch project name and sprint from Task doctype and update the child table."""
         for row in self.get("employee_tasks_sheet"):
@@ -19,7 +20,7 @@ class TimeSheet(Document):
                 row.project = task_doc.project  # Assign project from task
                 row.sprint = task_doc.sprint    # Assign sprint from task
 
-    def create_project_sheet_entries(self):
+    def create_project_sheet_entries(self , val =1):
         """Automatically creates Project Sheet Entry records for each task in the time sheet."""
         if not self.get("employee_tasks_sheet"):
             frappe.msgprint(_("No tasks found in the Time Sheet."), alert=True)
@@ -37,7 +38,7 @@ class TimeSheet(Document):
             project_sheet.posted_date = self.date  # Assign date
             project_sheet.sprint = row.sprint           # Assign sprint
             
-            project_sheet.actual_hours = row.actual_hours  # Assign actual hours
+            project_sheet.actual_hours = row.actual_hours  * val  # Assign actual hours
             project_sheet.insert(ignore_permissions=True)
             
             # Update task actual hours and status

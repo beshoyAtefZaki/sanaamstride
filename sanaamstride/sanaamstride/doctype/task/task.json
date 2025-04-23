@@ -29,6 +29,7 @@
   "expected_end_date",
   "end_date",
   "actual_hours_count",
+  "total_hours",
   "related_task_section",
   "required_task",
   "comments_section",
@@ -43,6 +44,7 @@
   {
    "fieldname": "name1",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Name"
@@ -61,6 +63,7 @@
   {
    "fieldname": "type",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Type",
@@ -69,6 +72,7 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Status",
@@ -154,6 +158,7 @@
   {
    "fieldname": "actual_hours_count",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Actual Hours Count"
   },
   {
@@ -179,13 +184,22 @@
   {
    "fieldname": "sprint",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Sprint",
    "options": "Task"
+  },
+  {
+   "fieldname": "total_hours",
+   "fieldtype": "Int",
+   "is_virtual": 1,
+   "label": "Total Hours"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-21 20:52:21.209393",
+ "modified": "2025-04-22 21:23:37.522949",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Task",
@@ -205,7 +219,6 @@
    "write": 1
   }
  ],
- "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

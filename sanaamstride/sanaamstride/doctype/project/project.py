@@ -10,6 +10,12 @@ class Project(Document):
 	@property
 	def total_sup_projects(self):
 		return (frappe.db.count("Project", filters={"parent_project": self.name}))
+	
+	@property
+	def total_actual_hours(self):
+		if self.name :
+			return calculate_project_actual_hours(self.name ,self.is_parent)
+		return 0
 	def set_dates(self) :
 		if self.status not in ["Waiting"] :
 			if not self.expected_start_date :
@@ -204,6 +210,44 @@ def calculate_total_actual_hours(sprint_name = None):
 
 
 
+# def calculate_total_actual_hours_virtual(sprint_name = None):
+# 	"""
+# 	convert to calculate actual hours from Project Sheet Entry
+	
+# 	"""
+# 	if not sprint_name :
+# 		frappe.throw(_("Sprint name is required."))
+# 	"""Calculate total actual hours for completed tasks in a sprint and update sprint's actual hours count."""
+# 	try:
+# 		# First verify that the sprint exists
+# 		if not frappe.db.exists("Task", sprint_name):
+# 			frappe.throw(_("Sprint '{0}' not found").format(sprint_name))
+			
+# 		# Fetch all tasks related to the sprint
+# 		tasks = frappe.get_all("Task", filters={"sprint": sprint_name, "status": "Completed"}, fields=["name", "actual_hours_count"])
+		
+# 		# Sum the actual hours of completed tasks
+# 		total_hours = sum(task.get("actual_hours_count", 0) for task in tasks)
+		
+# 		# Create a breakdown of actual hours for each task
+# 		task_hours = {task['name']: task.get("actual_hours_count", 0) for task in tasks}
+		
+# 		# Update the sprint's actual_hours_count
+# 		# sprint_doc = frappe.get_doc("Task", sprint_name)
+# 		# sprint_doc.actual_hours_count = total_hours
+# 		# sprint_doc.save(ignore_permissions=True)
+		
+# 		# frappe.db.commit()
+		
+# 		# frappe.msgprint(_("Sprint total hours updated to: {0}").format(total_hours))
+# 		return total_hours
+# 	except Exception as e:
+# 		frappe.logger().error(f"Error calculating total actual hours for sprint {sprint_name}: {str(e)}")
+# 		frappe.throw(_("Error calculating total actual hours: {0}").format(str(e)))
+
+
+
+
 def calculate_total_actual_hours_virtual(sprint_name = None):
 	"""
 	convert to calculate actual hours from Project Sheet Entry
@@ -218,23 +262,54 @@ def calculate_total_actual_hours_virtual(sprint_name = None):
 			frappe.throw(_("Sprint '{0}' not found").format(sprint_name))
 			
 		# Fetch all tasks related to the sprint
-		tasks = frappe.get_all("Task", filters={"sprint": sprint_name, "status": "Completed"}, fields=["name", "actual_hours_count"])
+		tasks = frappe.get_all("Project Sheet Entry", filters={"sprint": sprint_name}, fields=["actual_hours"])
 		
-		# Sum the actual hours of completed tasks
-		total_hours = sum(task.get("actual_hours_count", 0) for task in tasks)
+		# Sum the actual hours from Project Sheet Entry
+		total_hours = sum(task.get("actual_hours", 0) for task in tasks)
 		
 		# Create a breakdown of actual hours for each task
-		task_hours = {task['name']: task.get("actual_hours_count", 0) for task in tasks}
+		task_hours = {task.get("actual_hours", 0) for task in tasks}
 		
-		# Update the sprint's actual_hours_count
-		# sprint_doc = frappe.get_doc("Task", sprint_name)
-		# sprint_doc.actual_hours_count = total_hours
-		# sprint_doc.save(ignore_permissions=True)
-		
-		# frappe.db.commit()
-		
-		# frappe.msgprint(_("Sprint total hours updated to: {0}").format(total_hours))
+
 		return total_hours
 	except Exception as e:
 		frappe.logger().error(f"Error calculating total actual hours for sprint {sprint_name}: {str(e)}")
 		frappe.throw(_("Error calculating total actual hours: {0}").format(str(e)))
+
+
+
+def calculate_project_actual_hours(project , is_parent = 0 ) :
+	"""
+	Get all tasks with type sprint and project = project   
+	Get all tasks type task project = project or sprint in project sprints 
+	"""
+	# Get all tasks with type sprint and project = project
+	
+	list_project = [project]
+	if is_parent == 1 :
+		# Get all sub-projects of the parent project
+		sub_projects = frappe.get_all("Project", filters={"parent_project": project}, fields=["name"])
+		list_project += [sub_project.get("name") for sub_project in sub_projects]
+	sprints  = frappe.get_all("Task", filters={"type": "sprint", "project": ["in" ,list_project ]} , 
+									       fields=["name"] )
+	
+	tasks_per_project   = frappe.get_all("Task", filters={"type": "task",  "project": ["in" ,list_project ]},  fields=["name"] )
+	tasks_per_sprint = frappe.get_all("Task", filters={"type": "task", "sprint": ["in" , sprints]} ,  fields=["name"])
+	tasks = sprints + tasks_per_project + tasks_per_sprint
+	tasks_name = set([task.get("name") for task in tasks])
+	tasks_list = list(tasks_name)
+	actual_hours = frappe.get_all("Project Sheet Entry", filters={"task": ["in" ,tasks_list ]}, 
+							   fields=["SUM(actual_hours) as total_hours"])
+	return actual_hours[0].get("total_hours") if actual_hours else 0
+
+
+
+# [{'name': 'Task-00010', 'actual_hours_count': 12}, 
+#  {'name': 'Task-00009', 'actual_hours_count': 0}, 
+#  {'name': 'Task-00006', 'actual_hours_count': 25},
+#  {'name': 'Task-00007', 'actual_hours_count': 0}, 
+#  {'name': 'Task-00008', 'actual_hours_count': 10}, 
+#  {'name': 'Task-00005', 'actual_hours_count': 4}, 
+#  {'name': 'Task-00004', 'actual_hours_count': 0},
+#   {'name': 'Task-00003', 'actual_hours_count': 0}, 
+#   {'name': 'Task-00002', 'actual_hours_count': 0}]

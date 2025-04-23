@@ -32,7 +32,7 @@
   "total_tasks_expected_hours",
   "max_hours",
   "project_time_section",
-  "total_project_hours",
+  "total_actual_hours",
   "total_sprints_hours",
   "total_tasks_hours",
   "customer_section",
@@ -181,11 +181,6 @@
    "label": "Project Time"
   },
   {
-   "fieldname": "total_project_hours",
-   "fieldtype": "Int",
-   "label": "Total Project Hours"
-  },
-  {
    "fieldname": "total_sprints_hours",
    "fieldtype": "Int",
    "label": "Total Sprints Hours"
@@ -264,8 +259,15 @@
    "fieldtype": "Int",
    "label": "Max Hours ",
    "mandatory_depends_on": "eval:doc.is_parent ==0 ;"
+  },
+  {
+   "fieldname": "total_actual_hours",
+   "fieldtype": "Int",
+   "is_virtual": 1,
+   "label": "Total Project Hours"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [
   {
@@ -277,7 +279,7 @@
    "link_fieldname": "project"
   }
  ],
- "modified": "2025-04-15 20:16:58.318822",
+ "modified": "2025-04-22 22:00:53.755494",
  "modified_by": "Administrator",
  "module": "Sanaamstride",
  "name": "Project",
@@ -301,5 +303,14 @@
  "search_fields": "project_name",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [
+  {
+   "color": "Green",
+   "title": "on progress"
+  },
+  {
+   "color": "Orange",
+   "title": "Waiting"
+  }
+ ]
 }
