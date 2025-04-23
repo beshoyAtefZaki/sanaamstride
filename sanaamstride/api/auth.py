@@ -12,8 +12,14 @@ def login():
     }
     """
     try:
-        username = frappe.request.form.get('usr')
-        password = frappe.request.form.get('pwd')
+        data = frappe.request.get_json()
+        if data:
+            username = data.get('usr')
+            password = data.get('pwd')
+        else:
+            # Fallback to form data if JSON is not provided
+            username = frappe.request.form.get('usr')
+            password = frappe.request.form.get('pwd')
         
         if not username or not password:
             frappe.throw('Username and password are required')
@@ -21,5 +27,5 @@ def login():
         return authenticate_user(username, password)
         
     except Exception as e:
-        frappe.local.response.http_status_code = 401
-        return {"message": str(e), "success": False}
+            frappe.local.response.http_status_code = 401
+            return {"message": str(e), "success": False}

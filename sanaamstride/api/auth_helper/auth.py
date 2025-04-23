@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 import jwt
 from datetime import datetime, timedelta
-
+import base64 
 def authenticate_user(username, password):
     """
     Authenticates user and returns JWT token if successful
@@ -13,32 +13,32 @@ def authenticate_user(username, password):
         frappe.local.login_manager.post_login()
 
         # Get user details
+        api_generate = generate_keys(frappe.session.user)
         user = frappe.get_doc('User', frappe.session.user)
+        token_key =  user.api_key + ":" + api_generate
+        token_key_decode = base64.b64encode(token_key.encode()).decode('utf-8')
+        auth_token = f"Basic {token_key_decode}"
+        frappe.local.response['auth_token'] = auth_token
         
-        # Generate JWT token
-        expiry = datetime.utcnow() + timedelta(days=1)
-        token = generate_jwt_token(user.name, expiry)
-        
-        # Get user roles
-        roles = [role.role for role in user.roles]
-        
-        return {
-            "message": "Login successful",
-            "success": True,
-            "access_token": token,
-            "user": {
-                "name": user.name,
-                "full_name": user.full_name,
-                "roles": roles
-            },
-            "expires_at": expiry.isoformat()
-        }
-        
+    
+    
     except frappe.AuthenticationError:
         frappe.throw(_("Invalid username or password"))
     except Exception as e:
         frappe.throw(_("Authentication failed: {0}").format(str(e)))
 
+
+def generate_keys(user):
+    user_details = frappe.get_doc('User', user)
+    api_secret = frappe.generate_hash(length=15)
+
+    if not user_details.api_key:
+        api_key = frappe.generate_hash(length=15)
+        user_details.api_key = api_key
+
+    user_details.api_secret = api_secret
+    user_details.save( ignore_permissions=True)
+    return api_secret
 def generate_jwt_token(user, expiry):
     """
     Generates a JWT token for the user
